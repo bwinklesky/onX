@@ -33,22 +33,18 @@
     //});
 
 
-    const [Legend, Graphic, Query] = await $arcgis.import([
+    const [Legend, Graphic, Query, FeatureLayer, LayerList] = await $arcgis.import([
         "@arcgis/core/widgets/Legend.js",
         "@arcgis/core/Graphic.js",    
-        "@arcgis/core/rest/support/Query.js"
+        "@arcgis/core/rest/support/Query.js",
+        "@arcgis/core/layers/FeatureLayer.js",
+        "@arcgis/core/widgets/LayerList.js"
     ]);
 
     require(["esri/config", "esri/Map", "esri/views/MapView"], async function (esriConfig,
         Map, MapView) {
 
-        const WMSLayer = await $arcgis.import("@arcgis/core/layers/WMSLayer.js");
-        const WFSLayer = await $arcgis.import("@arcgis/core/layers/WFSLayer.js");
-        const FeatureLayer = await $arcgis.import("@arcgis/core/layers/FeatureLayer.js");
-        const LayerList = await $arcgis.import("@arcgis/core/widgets/LayerList.js");  
-        const FeatureService = await $arcgis.import("@arcgis/core/rest/featureService/FeatureService.js");
-
-        console.log(WMSLayer);
+        const LayerList = await $arcgis.import();  
         
         const map = new Map({
             //layers: [layer],
@@ -213,17 +209,6 @@
                     returnGeometry: false,
                     outFields: ["*"], // Returns all fields. Specify an array of field names for specific fields.
                 });
-
-                //const query = new Query();
-                //query.where = "ELEV_GAIN > 500"; // Example attribute query
-                //query.outFields = ["ePLink"];
-                //query.returnGeometry = false;
-
-                //var viewModel = kendo.observable({
-
-                //});
-
-                //kendo.bind("#view", viewModel);
 
                 approvedLayer.queryFeatures(query).then(function (results) {
                     // results.features is an array of Graphic objects
