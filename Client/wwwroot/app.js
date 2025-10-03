@@ -1,38 +1,5 @@
 ﻿window.renderMap = async () => {
 
-
-    //const [Map, SceneView, WMSLayer] = await $arcgis.import([
-    //    "@arcgis/core/Map.js",
-    //    "@arcgis/core/views/SceneView.js",
-    //    "@arcgis/core/layers/WMSLayer.js",
-    //]);
-
-    //const layer = new WMSLayer({
-    //    url: "https://ows.terrestris.de/osm/service",
-    //});
-
-    //layer.load().then(() => {
-    //    const sublayer = layer.findSublayerByName("OSM-WMS");
-    //    if (sublayer) {
-    //        layer.sublayers = [sublayer];
-    //    }
-    //});
-
-    //const map = new Map({
-    //    basemap: {
-    //        baseLayers: [layer],
-    //    },
-    //});
-
-    //const view = new SceneView({
-    //    container: "viewDiv",
-    //    map: map,
-    //    spatialReference: {
-    //        wkid: 102100,
-    //    },
-    //});
-
-
     const [Legend, Graphic, Query] = await $arcgis.import([
         "@arcgis/core/widgets/Legend.js",
         "@arcgis/core/Graphic.js",    
