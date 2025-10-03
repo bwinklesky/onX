@@ -43,10 +43,8 @@
         Map, MapView) {
 
         const WMSLayer = await $arcgis.import("@arcgis/core/layers/WMSLayer.js");
-        
         const FeatureLayer = await $arcgis.import("@arcgis/core/layers/FeatureLayer.js");
         const LayerList = await $arcgis.import("@arcgis/core/widgets/LayerList.js");  
-        
 
         console.log(WMSLayer);
         
