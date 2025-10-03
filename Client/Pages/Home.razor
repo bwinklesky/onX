@@ -37,9 +37,9 @@
                 <thead>
                     <tr>
                         <th>NEPA #</th>
-                        <th>Temp. (C)</th>
-                        <th>Temp. (F)</th>
-                        <th>Summary</th>
+                        <th>Name</th>                        
+                        <th>Status</th>
+                        <th>Comments</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,14 +48,17 @@
                         <tr>
                             <td>@plan.Number</td>
                             <td>@plan.Name</td>
-                            <td>@plan.Geometry.Area</td>
+                            <td>@plan.Status</td>
+                            <td>
+                                <a href="@plan.ePLink">Link</a>                               
+                            </td>
                         </tr>
                     }
                 </tbody>
             </table>
         }
     </div>
-    <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">...</div>
+
     
     
 </div>

@@ -88,6 +88,9 @@ try
             {
                 Id = id.ToString(),
                 Number = (string)feature.Attributes["NEPAnum"],
+                Name = (string)feature.Attributes["LUPName"],
+                Status = (string)feature.Attributes["Status"],
+                ePLink = (string)feature.Attributes["ePLink"],
                 Geometry = feature.Geometry
             };
 

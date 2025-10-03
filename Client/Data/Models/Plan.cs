@@ -16,6 +16,9 @@ namespace BlazorApp.Client.Data.Models
         //[JsonPropertyName("NEPAnum")]
         public string? Status { get; set; }
 
+        public string? ePLink { get; set; }
+
+
         public bool IsApproved { get; set; }
 
         public Geometry Geometry { get; set; }
