@@ -1,13 +1,15 @@
-﻿window.renderMap = async () => {
+﻿window.renderMap = () => {
 
-    const [Legend, Graphic, Query] = await $arcgis.import([
-        "@arcgis/core/widgets/Legend.js",
-        "@arcgis/core/Graphic.js",    
-        "@arcgis/core/rest/support/Query.js"
-    ]);
+
 
     require(["esri/config", "esri/Map", "esri/views/MapView"], async function (esriConfig,
         Map, MapView) {
+
+        const [Legend, Graphic, Query] = await $arcgis.import([
+            "@arcgis/core/widgets/Legend.js",
+            "@arcgis/core/Graphic.js",
+            "@arcgis/core/rest/support/Query.js"
+        ]);
 
         const WMSLayer = await $arcgis.import("@arcgis/core/layers/WMSLayer.js");
         const FeatureLayer = await $arcgis.import("@arcgis/core/layers/FeatureLayer.js");

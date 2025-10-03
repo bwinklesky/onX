@@ -139,7 +139,6 @@ else
     {
         await base.OnAfterRenderAsync(firstRender);
 
-
         if (firstRender)
         {
             await JsRuntime.InvokeVoidAsync("renderMap");
@@ -150,19 +149,21 @@ else
     [JSInvokable]
     public static Task ReceiveDataFromJs(string jsonData)
     {
+        Console.WriteLine($"Received data from JavaScript: {jsonData}");
+
         // Deserialize jsonData and use it to update Blazor component state
         // For example, using System.Text.Json:
         var myData = JsonSerializer.Deserialize<List<Plan>>(jsonData);
 
-        foreach(var item in myData)
+        if(myData is not null)
         {
-
+            approved = myData.ToArray();
         }
 
-        approved = myData.ToArray();
+//        StateHasChanged();
 
         // ... then update component state or a shared service
-        Console.WriteLine($"Received data from JavaScript: {jsonData}");
+        
 
         return Task.CompletedTask;
     }
