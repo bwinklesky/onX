@@ -12,6 +12,7 @@ namespace BlazorApp.Client.Data.Models
         public string Id { get; set; }
         [JsonPropertyName("NEPAnum")]
         public string? Number { get; set; }
+        [JsonPropertyName("LUPName")]
         public string? Name { get; set; }
         //[JsonPropertyName("NEPAnum")]
         public string? Status { get; set; }
