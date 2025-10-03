@@ -1,5 +1,4 @@
 import SceneView from "@arcgis/core/views/SceneView";
-import "./scss/style.scss";
 import ArcGISMap from "@arcgis/core/Map.js";
 import WMSLayer from "@arcgis/core/layers/WMSLayer";
 import MapView from "@arcgis/core/views/MapView";

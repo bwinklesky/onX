@@ -1,4 +1,4 @@
-﻿window.renderMap = () => {
+﻿window.renderMap = async () => {
 
 
     //const [Map, SceneView, WMSLayer] = await $arcgis.import([
@@ -32,9 +32,13 @@
     //    },
     //});
 
+    const Legend = await $arcgis.import("@arcgis/core/widgets/Legend.js");
+
     require(["esri/config", "esri/Map", "esri/views/MapView"], async function (esriConfig,
         Map, MapView) {
 
+
+  
         const WMSLayer = await $arcgis.import("@arcgis/core/layers/WMSLayer.js");
         const WFSLayer = await $arcgis.import("@arcgis/core/layers/WFSLayer.js");
         const FeatureLayer = await $arcgis.import("@arcgis/core/layers/FeatureLayer.js");
@@ -96,7 +100,14 @@
         });
 
         view.ui.add(layerList, {
-            position: "top-right"
+            position: "bottom-left"
         });
+
+        let legend = new Legend({
+            view: view
+        });
+
+        view.ui.add(legend, "bottom-right");
+
     });
 };
