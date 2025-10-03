@@ -1,0 +1,102 @@
+﻿window.renderMap = () => {
+
+
+    //const [Map, SceneView, WMSLayer] = await $arcgis.import([
+    //    "@arcgis/core/Map.js",
+    //    "@arcgis/core/views/SceneView.js",
+    //    "@arcgis/core/layers/WMSLayer.js",
+    //]);
+
+    //const layer = new WMSLayer({
+    //    url: "https://ows.terrestris.de/osm/service",
+    //});
+
+    //layer.load().then(() => {
+    //    const sublayer = layer.findSublayerByName("OSM-WMS");
+    //    if (sublayer) {
+    //        layer.sublayers = [sublayer];
+    //    }
+    //});
+
+    //const map = new Map({
+    //    basemap: {
+    //        baseLayers: [layer],
+    //    },
+    //});
+
+    //const view = new SceneView({
+    //    container: "viewDiv",
+    //    map: map,
+    //    spatialReference: {
+    //        wkid: 102100,
+    //    },
+    //});
+
+    require(["esri/config", "esri/Map", "esri/views/MapView"], async function (esriConfig,
+        Map, MapView) {
+
+        const WMSLayer = await $arcgis.import("@arcgis/core/layers/WMSLayer.js");
+        const WFSLayer = await $arcgis.import("@arcgis/core/layers/WFSLayer.js");
+        const FeatureLayer = await $arcgis.import("@arcgis/core/layers/FeatureLayer.js");
+        const LayerList = await $arcgis.import("@arcgis/core/widgets/LayerList.js");  
+        const FeatureService = await $arcgis.import("@arcgis/core/rest/featureService/FeatureService.js");
+
+        console.log(WMSLayer);
+
+        const layer = new WMSLayer({
+            url: "https://klyk.app/geoserver/mountainmap/wms?service=WMS",
+            sublayers: [
+                {
+                    name: "mountainmap:resorts"
+                }
+            ]
+        });
+
+
+        //const layer2 = new WMSLayer({
+        //    url: "https://ows.terrestris.de/osm/service",
+        //});
+
+
+        //layer2.load().then(() => {
+        //    const sublayer = layer.findSublayerByName("OSM-WMS");
+        //    if (sublayer) {
+        //        layer.sublayers = [sublayer];
+        //    }
+        //});
+
+        //esriConfig.apiKey = "AAPK2ecc83e252294018a265438653dd9cc25DUG27XZzbpWZyhsUauz-x4e3zl8LFZEqy5iP-NBNQRRYSOlkT77xDFsYi2bZY1N";
+       
+        const map = new Map({
+            //layers: [layer],
+            basemap: "satellite" // Basemap layer service
+        });
+
+        const approvedLayer = new FeatureLayer({
+            url: `https://services1.arcgis.com/KbxwQRRfWyEYLgp4/ArcGIS/rest/services/BLM_Natl_Land_Use_Plans_Approved_2022/FeatureServer/1`
+        });
+        
+        map.add(approvedLayer);
+
+        const developmentLayer = new FeatureLayer({
+            url: `https://services1.arcgis.com/KbxwQRRfWyEYLgp4/ArcGIS/rest/services/BLM_Natl_Revision_Development_Land_Use_Plans/FeatureServer/0`
+        });
+
+        map.add(developmentLayer);
+
+        const view = new MapView({
+            map: map,
+            center: [-118.805, 34.027], // Longitude, latitude
+            zoom: 13, // Zoom level
+            container: "viewDiv" // Div element
+        });
+
+        const layerList = new LayerList({
+            view: view
+        });
+
+        view.ui.add(layerList, {
+            position: "top-right"
+        });
+    });
+};

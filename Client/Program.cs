@@ -62,12 +62,8 @@ try
 
     var serializer = GeoJsonSerializer.Create();
     var development = await http.GetStringAsync("BLM_Natl_Revision_Development_Land_Use_Plans_7679825753955010227.geojson");
-    var approved = await http.GetStringAsync("BLM_Natl_Land_Use_Plans_Approved_2022_-2082540630185191861.geojson");
-
-
 
     using var developmentReader = new StringReader(development);
-    using var approvedReader = new StringReader(approved);
 
     var test = developmentReader.ReadToEnd();
 

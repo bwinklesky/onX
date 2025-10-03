@@ -1,0 +1,19 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "allowJs": false,
+    "skipLibCheck":  true,
+    "target": "es2020",
+    "module": "ES2020",
+    "moduleResolution": "Node"    
+  },
+  "include": ["ClientApp"],
+  "exclude": [
+    "wwwroot",
+    "node_modules"
+  ]
+}

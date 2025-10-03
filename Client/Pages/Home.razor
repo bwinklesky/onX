@@ -4,11 +4,13 @@
 @using Microsoft.EntityFrameworkCore
 @inject HttpClient Http
 @inject ApplicationDbContext _context;
-
+@inject IJSRuntime JsRuntime
 
 <PageTitle>Home</PageTitle>
 
 <h3>BLM Projects</h3>
+
+<div id="viewDiv" style="height:600px"></div>
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
@@ -93,6 +95,19 @@ else
     private WeatherForecast[] forecasts = new WeatherForecast[] { };
     private NEPAProject[] projects = new NEPAProject[] { };
     private Plan[] plans = new Plan[] { };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        
+        if (firstRender)
+        {
+            await JsRuntime.InvokeVoidAsync("renderMap");
+        }
+
+    }
+
     protected override async Task OnInitializedAsync()
     {
         try

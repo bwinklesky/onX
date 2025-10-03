@@ -1,17 +1,19 @@
 ﻿using CsvHelper.Configuration;
 using NetTopologySuite.Geometries;
-using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace BlazorApp.Client.Data.Models
 {
     public class Plan
     {
-        
-        [JsonProperty("GlobalID")]
+
+        [JsonPropertyName("GlobalID")]
         public string Id { get; set; }
+        [JsonPropertyName("NEPAnum")]
         public string? Number { get; set; }
         public string? Name { get; set; }
+        //[JsonPropertyName("NEPAnum")]
         public string? Status { get; set; }
 
         public bool IsApproved { get; set; }
