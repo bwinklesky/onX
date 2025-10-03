@@ -33,16 +33,15 @@
     //});
 
 
-    const [Legend, Graphic] = await $arcgis.import([
+    const [Legend, Graphic, Query] = await $arcgis.import([
         "@arcgis/core/widgets/Legend.js",
-        "@arcgis/core/Graphic.js",       
+        "@arcgis/core/Graphic.js",    
+        "@arcgis/core/rest/support/Query.js"
     ]);
 
     require(["esri/config", "esri/Map", "esri/views/MapView"], async function (esriConfig,
         Map, MapView) {
 
-
-  
         const WMSLayer = await $arcgis.import("@arcgis/core/layers/WMSLayer.js");
         const WFSLayer = await $arcgis.import("@arcgis/core/layers/WFSLayer.js");
         const FeatureLayer = await $arcgis.import("@arcgis/core/layers/FeatureLayer.js");
@@ -50,21 +49,7 @@
         const FeatureService = await $arcgis.import("@arcgis/core/rest/featureService/FeatureService.js");
 
         console.log(WMSLayer);
-
-        //const layer2 = new WMSLayer({
-        //    url: "https://ows.terrestris.de/osm/service",
-        //});
-
-
-        //layer2.load().then(() => {
-        //    const sublayer = layer.findSublayerByName("OSM-WMS");
-        //    if (sublayer) {
-        //        layer.sublayers = [sublayer];
-        //    }
-        //});
-
-        //esriConfig.apiKey = "AAPK2ecc83e252294018a265438653dd9cc25DUG27XZzbpWZyhsUauz-x4e3zl8LFZEqy5iP-NBNQRRYSOlkT77xDFsYi2bZY1N";
-       
+        
         const map = new Map({
             //layers: [layer],
             basemap: "satellite" // Basemap layer service
@@ -112,13 +97,14 @@
 
         });
 
-        const distance = null;
-        const units = null;
 
         approvedLayer.load().then(() => {
             // Set the view extent to the data extent
             view.extent = approvedLayer.fullExtent;
             approvedLayer.popupTemplate = approvedLayer.createPopupTemplate();
+
+            console.log(approvedLayer.features);
+
         });
 
         developmentLayer.load().then(() => {
@@ -218,5 +204,58 @@
 
         view.ui.add(legend, "bottom-right");
 
+        view.when(function () {
+            // Wait for the layer to load before querying
+            approvedLayer.when(function () {
+
+                const query = new Query({
+                    where: "1=1", // This ensures all features are considered
+                    returnGeometry: false,
+                    outFields: ["*"], // Returns all fields. Specify an array of field names for specific fields.
+                });
+
+                //const query = new Query();
+                //query.where = "ELEV_GAIN > 500"; // Example attribute query
+                //query.outFields = ["ePLink"];
+                //query.returnGeometry = false;
+
+                //var viewModel = kendo.observable({
+
+                //});
+
+                //kendo.bind("#view", viewModel);
+
+                approvedLayer.queryFeatures(query).then(function (results) {
+                    // results.features is an array of Graphic objects
+
+                    console.log(results);
+
+                    var data = [];
+
+                    results.features.forEach(function (feature) {
+                        console.log("Trail Name:", feature.attributes.ePLink);
+                        data.push(feature.attributes);
+                        //console.log("Elevation Gain:", feature.attributes.ELEV_GAIN);
+                        // Access feature.geometry for spatial information
+                    });
+
+                    sendDataToBlazor(data);
+
+                }).catch(function (error) {
+                    console.error("Error querying features:", error);
+                });
+            });
+        });
+
     });
 };
+
+function sendDataToBlazor(data) {
+    DotNet.invokeMethodAsync('Client', 'ReceiveDataFromJs', JSON.stringify(data))
+        .then(() => {
+            console.log('Data sent to Blazor successfully.');
+        })
+        .catch(error => {
+            console.error('Error sending data to Blazor:', error);
+        });
+}

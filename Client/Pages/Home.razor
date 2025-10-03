@@ -2,6 +2,7 @@
 @using BlazorApp.Client.Data.Models
 @using BlazorApp.Shared
 @using Microsoft.EntityFrameworkCore
+@using System.Text.Json
 @inject HttpClient Http
 @inject ApplicationDbContext _context;
 @inject IJSRuntime JsRuntime
@@ -19,14 +20,18 @@
         role="tab" aria-controls="home-tab-pane" aria-selected="true">In Development</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="profile-tab" data-bs-toggle="tab"
-        data-bs-target="#profile-tab-pane" type="button" role="tab"
-        aria-controls="profile-tab-pane" aria-selected="false">Approved</button>
+        <button class="nav-link" id="approved-tab" data-bs-toggle="tab"
+                data-bs-target="#approved-tab-pane" type="button" role="tab"
+                aria-controls="approved-tab-pane" aria-selected="false">
+            Approved
+        </button>
     </li>
 </ul>
 
 <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+    <div class="tab-pane fade show active"
+    id="home-tab-pane" role="tabpanel" 
+    aria-labelledby="home-tab" tabindex="0">
         @if (plans == null)
         {
             <p><em>Loading...</em></p>
@@ -58,11 +63,43 @@
             </table>
         }
     </div>
-    
+    <div class="tab-pane fade show" id="approved-tab-pane" role="tabpanel"
+    aria-labelledby="approved-tab" tabindex="0">
+        @if (approved == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>NEPA #</th>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Comments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var plan in approved)
+                    {
+                        <tr>
+                            <td>@plan.Number</td>
+                            <td>@plan.Name</td>
+                            <td>@plan.Status</td>
+                            <td>
+                                <a href="@plan.ePLink">Link</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
 </div>
 
 
-
+@* 
 @if (projects == null)
 {
     <p><em>Loading...</em></p>
@@ -91,22 +128,43 @@ else
     </table>
 }
 
-
+ *@
 @code {
     private WeatherForecast[] forecasts = new WeatherForecast[] { };
     private NEPAProject[] projects = new NEPAProject[] { };
-    private Plan[] plans = new Plan[] { };
+    private static Plan[] plans = new Plan[] { };
+    private static Plan[] approved = new Plan[] { };
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
 
-        
+
         if (firstRender)
         {
             await JsRuntime.InvokeVoidAsync("renderMap");
         }
 
+    }
+
+    [JSInvokable]
+    public static Task ReceiveDataFromJs(string jsonData)
+    {
+        // Deserialize jsonData and use it to update Blazor component state
+        // For example, using System.Text.Json:
+        var myData = JsonSerializer.Deserialize<List<Plan>>(jsonData);
+
+        foreach(var item in myData)
+        {
+
+        }
+
+        approved = myData.ToArray();
+
+        // ... then update component state or a shared service
+        Console.WriteLine($"Received data from JavaScript: {jsonData}");
+
+        return Task.CompletedTask;
     }
 
     protected override async Task OnInitializedAsync()
