@@ -5,6 +5,9 @@ using CsvHelper;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
+using Newtonsoft.Json;
 using System.Globalization;
 using System.Net.Http.Json;
 using System.Xml;
@@ -36,6 +39,8 @@ try
     csv.Context.RegisterClassMap<FooMap>();
     var entities = csv.GetRecords<NEPAProject>().ToList();
 
+
+
     using (var scope = app.Services.CreateScope())
     {
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -53,6 +58,58 @@ try
         // Call the seeding method
         //DbSeeder.SeedProducts(env.ContentRootPath, context);
     }
+
+
+    var serializer = GeoJsonSerializer.Create();
+    var development = await http.GetStringAsync("BLM_Natl_Revision_Development_Land_Use_Plans_7679825753955010227.geojson");
+    var approved = await http.GetStringAsync("BLM_Natl_Land_Use_Plans_Approved_2022_-2082540630185191861.geojson");
+
+
+
+    using var developmentReader = new StringReader(development);
+    using var approvedReader = new StringReader(approved);
+
+    var test = developmentReader.ReadToEnd();
+
+    // Create a GeoJsonReader
+    var geoJsonReader = new GeoJsonReader();
+
+    //var featureCollection = reader.Read<NetTopologySuite.Features.FeatureCollection>(jsonReader);
+    // Deserialize the GeoJSON string to an NTS Geometry object
+    var features = geoJsonReader.Read<NetTopologySuite.Features.FeatureCollection>(test); // Or use Read<FeatureCollection>(geoJson)
+
+    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+        foreach (var feature in features)
+        {
+            Console.WriteLine(feature);
+
+            var id = (string)feature.Attributes["GlobalID"];
+
+            var plan = new Plan()
+            {
+                Id = id.ToString(),
+                Number = (string)feature.Attributes["NEPAnum"],
+                Geometry = feature.Geometry
+            };
+
+            context.Plans.Add(plan);
+
+            //var geometry = serializer.Deserialize<Plan>(feature);
+
+        }
+
+        await context.SaveChangesAsync();
+
+        // Ensure the database is created and migrations are applied
+        //context.Database.Migrate();
+
+        // Call the seeding method
+        //DbSeeder.SeedProducts(env.ContentRootPath, context);
+    }
+
 
     // Post the data to the server's API endpoint
     //var response = await http.PostAsJsonAsync("Seed/seed-data", entities);

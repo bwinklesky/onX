@@ -41,6 +41,8 @@ namespace BlazorApp.Client.Data
         }
 
         public DbSet<NEPAProject> NEPAProjects { get; set; }
+        public DbSet<Plan> Plans { get; set; }
+
 
     }
 }

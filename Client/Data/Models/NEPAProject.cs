@@ -8,6 +8,8 @@ namespace BlazorApp.Client.Data.Models
         [Key]
         public int Id { get; set; }
         public string? Number { get; set; }
+        public string? Name { get; set; }
+        public string? Status { get; set; }
     }
 
 
@@ -17,6 +19,8 @@ namespace BlazorApp.Client.Data.Models
         {
             //Map(m => m.Id).Name("ColumnA");
             Map(m => m.Number).Name("NEPA #");
+            Map(m => m.Name).Name("Project Name");
+            Map(m => m.Status).Name("NEPA Status");
         }
     }
 
