@@ -9,13 +9,20 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>BLM Projects</h1>
+<h1>Project Summary</h1>
 
 <div>
     <p>
         For this project, my focus was on the datasets that are available and ease of access to the data. 
-        According to the <a href="https://www.fs.usda.gov/about-agency/regulations-policies/comment-on-directives">US Forest Service web page</a>, 
-        there are no projects open for commenting. For the USFS, a data layer from the <a href="https://research.fs.usda.gov/projects/stew-map">STEW-MAP</a> was added to the map below.
+        According to the <a target="_blank" href="https://www.fs.usda.gov/about-agency/regulations-policies/comment-on-directives">US Forest Service web page</a>,
+        there are no projects open for commenting. Therefore, for the USFS a data layer from the <a target="_blank" href="https://research.fs.usda.gov/projects/stew-map">STEW-MAP</a> was added to the map below to highlight stewardship opportunities. 
+    </p>
+    <p>
+        Since there was more information publicly available using BLM sources and limited time, that's the focus of this project. 
+        To highlight my skills I used various data sources, which includes GeoJSON, CSV, Web Services and manual input.    
+    </p>
+    <p>
+
     </p>
 </div>
 
@@ -25,6 +32,8 @@
         This map is using the <a target="_blank" href="https://developers.arcgis.com/javascript/latest/">ArcGIS Maps SDK</a> to display the interactive features from the
         BLM FeatureServer (<a target="_blank" href="https://services1.arcgis.com/KbxwQRRfWyEYLgp4/arcgis/rest/services/BLM_Natl_Land_Use_Plans_Approved_2022/FeatureServer/1">Approved Layer</a>, <a href="https://services1.arcgis.com/KbxwQRRfWyEYLgp4/ArcGIS/rest/services/BLM_Natl_Revision_Development_Land_Use_Plans/FeatureServer/0">In Development Layer</a>). You can <a target="_blank" href="https://github.com/bwinklesky/onX/blob/main/Client/wwwroot/app.js">view the JavaScript</a> for more information.
     </p>
+    <p>I added a Layer List so the end user can turn off or turn on the different layers so make it easier to drill down into the content.  
+        I also added a legend to assist the end-user in understanding what they are viewing. Then end-user can click on the different polygons </p>
 </div>
 
 <div id="viewDiv" style="height:600px;margin:10px"></div>
@@ -35,7 +44,7 @@
         BLM Land Use Plans 
     </h3>
     <p>
-        Data used for the BLM data is located <a href="https://www.blm.gov/programs/planning-and-nepa/plans-in-development">here</a>.
+        Datasets used for the BLM data is located <a target="_blank" href="https://www.blm.gov/programs/planning-and-nepa/plans-in-development">here</a>.
     </p>       
 
 </div>
@@ -84,9 +93,9 @@ else
 <div>
     <h3>BLM Approved Project Plans</h3>
     <p>
-        This dataset is downloaded dynamically using an <a href="https://github.com/bwinklesky/onX/blob/67978e5064bb622c91952353af3e592d728d63cc/Api/PlansFunction.cs#L30">Azure function and C# to convert from JSON</a> to a data model.
+        This dataset is downloaded dynamically using an <a target="_blank" href="https://github.com/bwinklesky/onX/blob/67978e5064bb622c91952353af3e592d728d63cc/Api/PlansFunction.cs#L30">Azure function and C# to convert from JSON</a> to a data model.
         from the <a target="_blank" href="https://services1.arcgis.com/KbxwQRRfWyEYLgp4/arcgis/rest/services/BLM_Natl_Land_Use_Plans_Approved_2022/FeatureServer/1/query">BLM ArcGIS Feature Server</a>
-        and processed for display using an API.
+        and processed for display using a Web Service endpoint.
     </p>
 </div>
 
@@ -125,13 +134,14 @@ else
 
 <div>
     <h3>BLM NEPA Projects</h3>
-    <p>This dataset is pulled from the <a href="https://eplanning.blm.gov/eplanning-ui/home">BLM National NEPA Register</a> as a CSV and converted
+    <p>
+        This dataset is pulled from the <a target="_blank"  href="https://eplanning.blm.gov/eplanning-ui/home">BLM National NEPA Register</a> as a CSV and converted
         to a data model for <a target="_blank" href="https://github.com/bwinklesky/onX/blob/67978e5064bb622c91952353af3e592d728d63cc/Client/Program.cs#L36">display using C#</a>.
 
     </p>
     <p class="bg-warning p-2">
         Unfortunately, the comment period dates are not published in any of the datasets.  
-        However, an <a href="https://github.com/bwinklesky/onX/blob/4009cc37233f93e5d53ee23167a4669603fe1c6c/Api/PlansFunction.cs#L54">intial attempt</a> was made to scrape the ePlanning project pages to collect the dates.
+        However, an <a target="_blank" href="https://github.com/bwinklesky/onX/blob/main/Api/PlansFunction.cs#L53">initial attempt</a> was made to scrape the ePlanning project pages to collect the dates.
         It has been commented out for performance reasons and would need to be done in a background process.
         The comment start and end dates were entered manually in the CSV where it was available.  
     </p>

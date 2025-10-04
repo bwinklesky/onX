@@ -97,8 +97,6 @@
 
             const point = view.toMap(screenPoint);
 
-            console.log(approvedLayer);
-
             if (approvedLayer.visible) {
                 approvedLayer
                     .queryFeatures({
@@ -153,7 +151,38 @@
                         }
                     });
             }
-           
+
+            if (stewmapLayer.visible) {
+
+                stewmapLayer
+                    .queryFeatures({
+                        geometry: point,
+                        // distance and units will be null if basic query selected
+                        distance:1000,
+                        spatialRelationship: "intersects",
+                        returnGeometry: false,
+                        returnQueryGeometry: true,
+                        outFields: ["*"],
+                    })
+                    .then((featureSet) => {
+                        // set graphic location to mouse pointer and add to mapview
+                        pointGraphic.geometry = point;
+                        view.graphics.add(pointGraphic);
+                        // open popup of query result
+                        console.log(featureSet.features);
+
+                        view.openPopup({
+                            location: point,
+                            features: featureSet.features,
+                            featureMenuOpen: true,
+                        });
+
+                        if (featureSet.queryGeometry) {
+                            bufferGraphic.geometry = featureSet.queryGeometry;
+                            view.graphics.add(bufferGraphic);
+                        }
+                    });
+            }
         }
 
         const layerList = new LayerList({
