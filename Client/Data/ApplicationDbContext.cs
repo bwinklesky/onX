@@ -1,4 +1,4 @@
-﻿using BlazorApp.Client.Data.Models;
+﻿using BlazorApp.Shared;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.EntityFrameworkCore;

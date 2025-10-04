@@ -2,7 +2,7 @@
 using NetTopologySuite.Geometries;
 using System.Text.Json.Serialization;
 
-namespace BlazorApp.Client.Data.Models
+namespace BlazorApp.Shared
 {
     public class Plan
     {

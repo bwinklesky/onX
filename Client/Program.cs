@@ -1,6 +1,6 @@
 using BlazorApp.Client;
 using BlazorApp.Client.Data;
-using BlazorApp.Client.Data.Models;
+using BlazorApp.Shared;
 using CsvHelper;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;

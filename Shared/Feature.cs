@@ -1,4 +1,4 @@
-﻿namespace BlazorApp.Client.Data.Models
+﻿namespace BlazorApp.Shared
 {
     public class Feature
     {

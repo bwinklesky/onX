@@ -1,7 +1,7 @@
 ﻿using CsvHelper.Configuration;
 using System.ComponentModel.DataAnnotations;
 
-namespace BlazorApp.Client.Data.Models
+namespace BlazorApp.Shared
 {
     public class NEPAProject
     {
