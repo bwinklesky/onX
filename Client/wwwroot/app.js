@@ -1,20 +1,15 @@
 ﻿window.renderMap = () => {
 
-    require(["esri/config", "esri/Map", "esri/views/MapView"], async function (esriConfig,
-        Map, MapView) {
+    require(["esri/Map", "esri/views/MapView"], async function (Map, MapView) {
 
-        const [Legend, Graphic, Query] = await $arcgis.import([
+        const [Legend, Graphic, Query, FeatureLayer, LayerList] = await $arcgis.import([
             "@arcgis/core/widgets/Legend.js",
             "@arcgis/core/Graphic.js",
-            "@arcgis/core/rest/support/Query.js"
+            "@arcgis/core/rest/support/Query.js",
+            "@arcgis/core/layers/FeatureLayer.js",
+            "@arcgis/core/widgets/LayerList.js"
         ]);
-
-        const WMSLayer = await $arcgis.import("@arcgis/core/layers/WMSLayer.js");
-        const FeatureLayer = await $arcgis.import("@arcgis/core/layers/FeatureLayer.js");
-        const LayerList = await $arcgis.import("@arcgis/core/widgets/LayerList.js");  
-
-        console.log(WMSLayer);
-        
+                
         const map = new Map({
             //layers: [layer],
             basemap: "satellite" // Basemap layer service
@@ -31,6 +26,12 @@
         });
 
         map.add(developmentLayer);
+
+        const stewmapLayer = new FeatureLayer({
+            url: 'https://services1.arcgis.com/gGHDlz6USftL5Pau/arcgis/rest/services/Live_all_2023_v4_Stewmap_dataViewAdd/FeatureServer/3'
+        })
+
+        map.add(stewmapLayer);
 
         const view = new MapView({
             map: map,

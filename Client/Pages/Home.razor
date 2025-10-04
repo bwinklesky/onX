@@ -11,16 +11,22 @@
 
 <h1>BLM Projects</h1>
 
+<div>
+    <p>
+        For this project, my focus was on the datasets that are available and ease of access to the data. 
+        According to the <a href="https://www.fs.usda.gov/about-agency/regulations-policies/comment-on-directives">US Forest Service web page</a>, 
+        there are no projects open for commenting. For the USFS, a data layer from the <a href="https://research.fs.usda.gov/projects/stew-map">STEW-MAP</a> was added to the map below.
+    </p>
+</div>
 
 <div>
     <h3>Map Data</h3>
     <p>
-        This map is using the <a href="https://developers.arcgis.com/javascript/latest/">ArcGIS Maps SDK</a> to display the interactive features from the
-        BLM FeatureServer (<a target="_blank" href="https://services1.arcgis.com/KbxwQRRfWyEYLgp4/arcgis/rest/services/BLM_Natl_Land_Use_Plans_Approved_2022/FeatureServer/1">Approved Layer</a>, <a href="https://services1.arcgis.com/KbxwQRRfWyEYLgp4/ArcGIS/rest/services/BLM_Natl_Revision_Development_Land_Use_Plans/FeatureServer/0">In Development Layer</a>)
-
-
+        This map is using the <a target="_blank" href="https://developers.arcgis.com/javascript/latest/">ArcGIS Maps SDK</a> to display the interactive features from the
+        BLM FeatureServer (<a target="_blank" href="https://services1.arcgis.com/KbxwQRRfWyEYLgp4/arcgis/rest/services/BLM_Natl_Land_Use_Plans_Approved_2022/FeatureServer/1">Approved Layer</a>, <a href="https://services1.arcgis.com/KbxwQRRfWyEYLgp4/ArcGIS/rest/services/BLM_Natl_Revision_Development_Land_Use_Plans/FeatureServer/0">In Development Layer</a>). You can <a target="_blank" href="https://github.com/bwinklesky/onX/blob/main/Client/wwwroot/app.js">view the JavaScript</a> for more information.
     </p>
 </div>
+
 <div id="viewDiv" style="height:600px;margin:10px"></div>
 
 <div>
@@ -36,7 +42,7 @@
     <p>
         This dataset was downloaded as a GeoJSON file 
         from the <a target="_blank" href="https://gbp-blm-egis.hub.arcgis.com/datasets/BLM-EGIS::blm-natl-revision-development-land-use-plans/explore">ArcGIS Hub</a> 
-        and processed for display using an In-Memory database.  
+        and processed for display using an <a target="_blank" href="https://github.com/bwinklesky/onX/blob/86038876f170c31d380a8a533f5fc342185b3b12/Client/Program.cs#L63">In-Memory database</a>.
     </p>
 </div>
 
@@ -117,12 +123,13 @@ else
 <div>
     <h3>BLM NEPA Projects</h3>
     <p>This dataset is pulled from the <a href="https://eplanning.blm.gov/eplanning-ui/home">BLM National NEPA Register</a> as a CSV and converted
-        to a data model for <a href="https://github.com/bwinklesky/onX/blob/67978e5064bb622c91952353af3e592d728d63cc/Client/Program.cs#L36">display using C#</a>.
+        to a data model for <a target="_blank" href="https://github.com/bwinklesky/onX/blob/67978e5064bb622c91952353af3e592d728d63cc/Client/Program.cs#L36">display using C#</a>.
 
     </p>
     <p class="text-danger bg-warning p-2">
         Unfortunately, the comment period dates are not published in any of the datasets.  
-        However, an <a href="https://github.com/bwinklesky/onX/blob/4009cc37233f93e5d53ee23167a4669603fe1c6c/Api/PlansFunction.cs#L54">intial attempt</a> was made to scrape the ePlanning project pages to collect the dates.  
+        However, an <a href="https://github.com/bwinklesky/onX/blob/4009cc37233f93e5d53ee23167a4669603fe1c6c/Api/PlansFunction.cs#L54">intial attempt</a> was made to scrape the ePlanning project pages to collect the dates.
+        It has been commented out for performance reasons and would need to be done in a background process.   
     </p>
 </div>
 
