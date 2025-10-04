@@ -30,6 +30,7 @@ var env = app.Services.GetRequiredService<IWebAssemblyHostEnvironment>();
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 var http = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
+
 try
 {
     // Read the CSV file from the client's wwwroot folder
@@ -38,8 +39,6 @@ try
     using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
     csv.Context.RegisterClassMap<FooMap>();
     var entities = csv.GetRecords<NEPAProject>().ToList();
-
-
 
     using (var scope = app.Services.CreateScope())
     {
@@ -96,17 +95,10 @@ try
 
             context.Plans.Add(plan);
 
-            //var geometry = serializer.Deserialize<Plan>(feature);
-
         }
 
         await context.SaveChangesAsync();
 
-        // Ensure the database is created and migrations are applied
-        //context.Database.Migrate();
-
-        // Call the seeding method
-        //DbSeeder.SeedProducts(env.ContentRootPath, context);
     }
 
 
@@ -121,10 +113,3 @@ catch (Exception ex)
 
 await app.RunAsync();
 
-internal class DbSeeder
-{
-    internal static void SeedProducts(object contentRootPath, ApplicationDbContext context)
-    {
-        throw new NotImplementedException();
-    }
-}

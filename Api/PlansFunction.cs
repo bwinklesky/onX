@@ -64,7 +64,7 @@ namespace Api
                     //{
                     //    if (specificElementText.Contains("comment period", StringComparison.InvariantCultureIgnoreCase))
                     //    {
-                    //        Console.WriteLine("BOB");
+                    //        Console.WriteLine("Comment Period found.");
                     //    }
                     //}
 
