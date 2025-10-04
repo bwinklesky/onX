@@ -2,8 +2,10 @@ using BlazorApp.Client;
 using BlazorApp.Client.Data;
 using BlazorApp.Shared;
 using CsvHelper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
@@ -25,16 +27,27 @@ var app = builder.Build();
 
 var env = app.Services.GetRequiredService<IWebAssemblyHostEnvironment>();
 
+
 // Seed the database
 
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-var http = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
+builder.Services.AddScoped(sp => new HttpClient { 
+    BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) 
+});
+
+var http = new HttpClient { 
+    BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
+};
+
+
 
 try
 {
     // Read the CSV file from the client's wwwroot folder
-    var csvContent = await http.GetStringAsync("SearchResults.csv");
+    var csvContent = await http.GetStringAsync("SearchResults.csv?v=1");
+
+    //http.DefaultRequestHeaders.Add("Clear-Site-Data", "\"cache\", \"cookies\", \"storage\"");
+
     using var reader = new StringReader(csvContent);
     using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
     csv.Context.RegisterClassMap<NEPAMap>();

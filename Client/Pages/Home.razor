@@ -31,9 +31,12 @@
 
 <div>
 
-    https://www.blm.gov/programs/planning-and-nepa/plans-in-development
-
-    
+    <h3>
+        BLM Land Use Plans 
+    </h3>
+    <p>
+        Data used for the BLM data is located <a href="https://www.blm.gov/programs/planning-and-nepa/plans-in-development">here</a>.
+    </p>       
 
 </div>
 
@@ -160,7 +163,18 @@ else
                     <td>@project.Status</td>
                     <td>@project.LeadOffice</td>
                     <td>@project.FiscalYear</td>
-                    <td>@project.Start - @project.End</td>
+                    <td>
+                        @if(!string.IsNullOrEmpty(project.Start))
+                        {
+                            <span>
+                                @project.Start
+                                ->
+                            </span>
+                        }
+                        
+                        @project.End                         
+
+                     </td>
                 </tr>
             }
         </tbody>
