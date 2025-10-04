@@ -1,12 +1,14 @@
-using System.Net;
-using System.Net.Http.Json;
-using System.Text.Json;
-using System.Text.Json.Nodes;
 using BlazorApp.Client.Data.Models;
 using BlazorApp.Shared;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
+using PuppeteerSharp;
+//using PuppeteerSharp.Dom;
+using System.Net;
+using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace Api
 {
@@ -46,7 +48,28 @@ namespace Api
                 foreach(var feature in features)
                 {
                     var plan = feature["attributes"].Deserialize<Plan>();
+
+                    var link = plan.ePLink;
+
+                    //var browserFetcher = new BrowserFetcher();
+                    //await browserFetcher.DownloadAsync();
+                    //await using var browser = await Puppeteer.LaunchAsync(
+                    //    new LaunchOptions { Headless = true });
+                    //await using var page = await browser.NewPageAsync();
+                    //await page.GoToAsync(link);
+
+                    //var specificElementText = await page.EvaluateFunctionAsync<string>("(selector) => document.querySelector(selector).textContent", "#content");
+
+                    //if(specificElementText != null)
+                    //{
+                    //    if (specificElementText.Contains("comment period", StringComparison.InvariantCultureIgnoreCase))
+                    //    {
+                    //        Console.WriteLine("BOB");
+                    //    }
+                    //}
+
                     results.Add(plan);
+
                 }
 
             }
