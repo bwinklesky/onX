@@ -1,7 +1,5 @@
 ﻿window.renderMap = () => {
 
-
-
     require(["esri/config", "esri/Map", "esri/views/MapView"], async function (esriConfig,
         Map, MapView) {
 
@@ -36,8 +34,8 @@
 
         const view = new MapView({
             map: map,
-            center: [-118.805, 34.027], // Longitude, latitude
-            zoom: 13, // Zoom level
+            center: [-98.57955, 39.8283], // Longitude, latitude
+            zoom: 5, // Zoom level
             container: "viewDiv" // Div element
         });
 
@@ -67,7 +65,7 @@
 
         approvedLayer.load().then(() => {
             // Set the view extent to the data extent
-            view.extent = approvedLayer.fullExtent;
+            //view.extent = approvedLayer.fullExtent;
             approvedLayer.popupTemplate = approvedLayer.createPopupTemplate();
 
             console.log(approvedLayer.features);
@@ -188,14 +186,21 @@
 
                     var data = [];
 
+                    var count = 0;
                     results.features.forEach(function (feature) {
-                        console.log("Trail Name:", feature.attributes.ePLink);
+                        
                         data.push(feature.attributes);
+                        count++;
+                        if (count > 10) {
+                            //sendDataToBlazor(data);
+                            data = [];
+                        }
+
                         //console.log("Elevation Gain:", feature.attributes.ELEV_GAIN);
                         // Access feature.geometry for spatial information
                     });
 
-                    sendDataToBlazor(data);
+                    
 
                 }).catch(function (error) {
                     console.error("Error querying features:", error);
@@ -207,6 +212,7 @@
 };
 
 function sendDataToBlazor(data) {
+
     DotNet.invokeMethodAsync('Client', 'ReceiveDataFromJs', JSON.stringify(data))
         .then(() => {
             console.log('Data sent to Blazor successfully.');

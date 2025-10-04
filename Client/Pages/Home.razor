@@ -13,94 +13,8 @@
 
 <div id="viewDiv" style="height:600px;margin:10px"></div>
 
-<ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
-        data-bs-target="#home-tab-pane" type="button"
-        role="tab" aria-controls="home-tab-pane" aria-selected="true">In Development</button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="approved-tab" data-bs-toggle="tab"
-                data-bs-target="#approved-tab-pane" type="button" role="tab"
-                aria-controls="approved-tab-pane" aria-selected="false">
-            Approved
-        </button>
-    </li>
-</ul>
 
-<div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active"
-    id="home-tab-pane" role="tabpanel" 
-    aria-labelledby="home-tab" tabindex="0">
-        @if (plans == null)
-        {
-            <p><em>Loading...</em></p>
-        }
-        else
-        {
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>NEPA #</th>
-                        <th>Name</th>                        
-                        <th>Status</th>
-                        <th>Comments</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var plan in plans)
-                    {
-                        <tr>
-                            <td>@plan.Number</td>
-                            <td>@plan.Name</td>
-                            <td>@plan.Status</td>
-                            <td>
-                                <a href="@plan.ePLink">Link</a>                               
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
-    </div>
-    <div class="tab-pane fade show" id="approved-tab-pane" role="tabpanel"
-    aria-labelledby="approved-tab" tabindex="0">
-        @if (approved == null)
-        {
-            <p><em>Loading...</em></p>
-        }
-        else
-        {
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>NEPA #</th>
-                        <th>Name</th>
-                        <th>Status</th>
-                        <th>Comments</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var plan in approved)
-                    {
-                        <tr>
-                            <td>@plan.Number</td>
-                            <td>@plan.Name</td>
-                            <td>@plan.Status</td>
-                            <td>
-                                <a href="@plan.ePLink">Link</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
-    </div>
-</div>
-
-
-@* 
-@if (projects == null)
+@if (plans == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -110,7 +24,70 @@ else
         <thead>
             <tr>
                 <th>NEPA #</th>
-                <th>Project Number</th>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Comments</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var plan in plans)
+            {
+                <tr>
+                    <td>@plan.Number</td>
+                    <td>@plan.Name</td>
+                    <td>@plan.Status</td>
+                    <td>
+                        <a href="@plan.ePLink">Link</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (approvedPlans == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>NEPA #</th>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Comments</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var plan in approvedPlans)
+            {
+                <tr>
+                    <td>@plan.Number</td>
+                    <td>@plan.Name</td>
+                    <td>@plan.Status</td>
+                    <td>
+                        <a href="@plan.ePLink">Link</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+@if (projects == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>NEPA #</th>                
                 <th>Name</th>
                 <th>Status</th>
             </tr>
@@ -128,12 +105,15 @@ else
     </table>
 }
 
- *@
+
 @code {
-    private WeatherForecast[] forecasts = new WeatherForecast[] { };
+
     private NEPAProject[] projects = new NEPAProject[] { };
-    private static Plan[] plans = new Plan[] { };
-    private static Plan[] approved = new Plan[] { };
+    private Plan[] plans = new Plan[] { };
+
+    private static List<Plan> approved = new();
+
+    private Plan[] approvedPlans = new Plan[] { };
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -146,59 +126,21 @@ else
 
     }
 
-    [JSInvokable]
-    public static Task ReceiveDataFromJs(string jsonData)
-    {
-        Console.WriteLine($"Received data from JavaScript: {jsonData}");
-
-        // Deserialize jsonData and use it to update Blazor component state
-        // For example, using System.Text.Json:
-        var myData = JsonSerializer.Deserialize<List<Plan>>(jsonData);
-
-        if(myData is not null)
-        {
-            approved = myData.ToArray();
-        }
-
-//        StateHasChanged();
-
-        // ... then update component state or a shared service
-        
-
-        return Task.CompletedTask;
-    }
-
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("/api/WeatherForecast") ?? new WeatherForecast[] { };
+            
+            approvedPlans = await Http.GetFromJsonAsync<Plan[]>("/api/Plans") ?? new Plan[] { };
 
             projects = await _context.NEPAProjects.ToArrayAsync();
             plans = await _context.Plans.ToArrayAsync();
-
-            //https://services1.arcgis.com/KbxwQRRfWyEYLgp4/arcgis/rest/services/BLM_Natl_Land_Use_Plans_Approved_2022/FeatureServer/1/query?f=json&returnIdsOnly=false&returnCountOnly=true&returnGeometry=false&spatialRel=esriSpatialRelIntersects&where=1%3D1%20AND%201%3D1
-
-            var url = "https://services1.arcgis.com/KbxwQRRfWyEYLgp4/arcgis/rest/services/BLM_Natl_Land_Use_Plans_Approved_2022/FeatureServer/1/query?f=json&returnIdsOnly=false&returnCountOnly=true&returnGeometry=false&spatialRel=esriSpatialRelIntersects&where=1%3D1%20AND%201%3D1";
-
-            var client = new HttpClient();
-
-            var response = await client.GetAsync(url);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var data = await response.Content.ReadAsStringAsync();
-
-
-            }
 
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.ToString());
         }
-
-        
 
     }
 }

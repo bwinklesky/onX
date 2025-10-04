@@ -1,6 +1,5 @@
 ﻿using CsvHelper.Configuration;
 using NetTopologySuite.Geometries;
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace BlazorApp.Client.Data.Models
@@ -11,13 +10,13 @@ namespace BlazorApp.Client.Data.Models
         [JsonPropertyName("GlobalID")]
         public string Id { get; set; }
         [JsonPropertyName("NEPAnum")]
-        public string? Number { get; set; }
+        public string Number { get; set; }
         [JsonPropertyName("LUPName")]
-        public string? Name { get; set; }
+        public string Name { get; set; }
         //[JsonPropertyName("NEPAnum")]
-        public string? Status { get; set; }
+        public string Status { get; set; }
 
-        public string? ePLink { get; set; }
+        public string ePLink { get; set; }
 
 
         public bool IsApproved { get; set; }
