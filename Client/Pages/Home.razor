@@ -126,10 +126,11 @@ else
         to a data model for <a target="_blank" href="https://github.com/bwinklesky/onX/blob/67978e5064bb622c91952353af3e592d728d63cc/Client/Program.cs#L36">display using C#</a>.
 
     </p>
-    <p class="text-danger bg-warning p-2">
+    <p class="bg-warning p-2">
         Unfortunately, the comment period dates are not published in any of the datasets.  
         However, an <a href="https://github.com/bwinklesky/onX/blob/4009cc37233f93e5d53ee23167a4669603fe1c6c/Api/PlansFunction.cs#L54">intial attempt</a> was made to scrape the ePlanning project pages to collect the dates.
-        It has been commented out for performance reasons and would need to be done in a background process.   
+        It has been commented out for performance reasons and would need to be done in a background process.
+        The comment start and end dates were entered manually in the CSV where it was available.  
     </p>
 </div>
 
@@ -147,6 +148,7 @@ else
                 <th>Status</th>
                 <th>Office</th>
                 <th>Fiscal Year</th>
+                <th>Comment Period</th>
             </tr>
         </thead>
         <tbody>
@@ -158,6 +160,7 @@ else
                     <td>@project.Status</td>
                     <td>@project.LeadOffice</td>
                     <td>@project.FiscalYear</td>
+                    <td>@project.Start - @project.End</td>
                 </tr>
             }
         </tbody>

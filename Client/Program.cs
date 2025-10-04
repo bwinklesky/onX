@@ -37,7 +37,7 @@ try
     var csvContent = await http.GetStringAsync("SearchResults.csv");
     using var reader = new StringReader(csvContent);
     using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
-    csv.Context.RegisterClassMap<FooMap>();
+    csv.Context.RegisterClassMap<NEPAMap>();
     var entities = csv.GetRecords<NEPAProject>().ToList();
 
     using (var scope = app.Services.CreateScope())
