@@ -19,7 +19,10 @@
     </p>
     <p>
         Since there was more information publicly available using BLM sources and limited time, that's the focus of this project. 
-        To highlight my skills I used various data sources, which includes GeoJSON, CSV, Web Services and manual input.    
+        To highlight my skills I used various data sources, which includes GeoJSON, CSV, Web Services and manual input.   
+        The prompt is asking for comment periods to be symbolized on the map, but I wasn't able to find a dataset that had it readily available.  I tried to find existing "Plans" that had a geography tied to it by comparing the 
+        NEPA # and/or Project Name in the <a href="#nepa-register">NEPA Register dataset</a>, which is where the comment dates were manually entered.  More work would need to be done to tie the comment periods with a geographic Area of Interest.
+        I could add the location of the Field Office for the projects, but I'm out of time.  Hopefully, the data that has been added to the map will demonstrate my ability to add layers to a map with different symbologies.    
     </p>
     <p>
         The datasets presented on the BLM project portal offer a vital foundation for public advocacy and conservation efforts by enhancing transparency and accessibility to federal land management decisions. With detailed records of approved, in-development, and revision-stage Resource Management Plans (RMPs), stakeholders—including environmental organizations, local communities, and policy advocates—can monitor land use changes, identify ecological risks, and engage meaningfully during public comment periods. The integration of STEW-MAP data further empowers grassroots stewardship by mapping civic environmental actors, helping advocates align conservation priorities with community capacities. By visualizing these plans through interactive ArcGIS tools, the platform transforms static policy into actionable insight, enabling informed dialogue and collaborative planning for sustainable land use.
@@ -132,7 +135,8 @@ else
 
 
 <div>
-    <h3>BLM NEPA Projects</h3>
+    <h3 id="nepa-register">BLM NEPA Projects</h3>
+    
     <p>
         This dataset is pulled from the <a target="_blank" href="https://eplanning.blm.gov/eplanning-ui/home">BLM National NEPA Register</a> as a <a target="_blank" href="https://github.com/bwinklesky/onX/blob/main/Client/wwwroot/SearchResults.csv">CSV</a> and converted
         to a data model for <a target="_blank" href="https://github.com/bwinklesky/onX/blob/67978e5064bb622c91952353af3e592d728d63cc/Client/Program.cs#L36">display using C#</a>.
@@ -175,14 +179,17 @@ else
                     <td>
                         @if(!string.IsNullOrEmpty(project.Start))
                         {
-                            <span>
-                                @project.Start
-                                ->
-                            </span>
-                        }
-                        
-                        @project.End                         
+                            <div>
+                               Starts: @project.Start                                
+                            </div>
 
+                        }
+                        @if (!string.IsNullOrEmpty(project.End))
+                        {
+                            <div>
+                                Ends: @project.End
+                            </div>
+                        }                        
                      </td>
                 </tr>
             }
@@ -215,11 +222,27 @@ else
     {
         try
         {
-            
+
             approvedPlans = await Http.GetFromJsonAsync<Plan[]>("/api/Plans") ?? new Plan[] { };
 
             projects = await _context.NEPAProjects.ToArrayAsync();
             plans = await _context.Plans.ToArrayAsync();
+
+            foreach(var proj in projects)
+            {
+                var item = approvedPlans.Where(i => i.Name == proj.Name).ToList();
+                if (item.Count > 0)
+                {
+                    
+                
+                }
+                item = plans.Where(i => i.Name == proj.Name).ToList();
+                if (item.Count > 0)
+                {
+
+
+                }
+            }
 
         }
         catch (Exception ex)
