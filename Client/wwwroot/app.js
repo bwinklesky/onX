@@ -79,6 +79,12 @@
             developmentLayer.popupTemplate = developmentLayer.createPopupTemplate();
         });
 
+        stewmapLayer.load().then(() => {
+            // Set the view extent to the data extent
+            //view.extent = approvedLayer.fullExtent;
+            stewmapLayer.popupTemplate = stewmapLayer.createPopupTemplate();
+        });
+
 
         // Create graphic for distance buffer
         const bufferGraphic = new Graphic({

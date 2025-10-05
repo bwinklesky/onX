@@ -21,10 +21,10 @@ namespace BlazorApp.Client.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<NEPAProject>().HasData(
-                new NEPAProject { Id = 1 },
-                new NEPAProject { Id = 2 }
-            );
+            //modelBuilder.Entity<NEPAProject>().HasData(
+            //    new NEPAProject { Id = 1 },
+            //    new NEPAProject { Id = 2 }
+            //);
 
             //var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             //{
